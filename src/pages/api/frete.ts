@@ -73,7 +73,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     console.log('Error ', error)
   });
 
-  await delay(5000);
+  await delay(1000);
   console.log({ PAC, SEDEX })
   res.statusCode = 200
   res.send({ PAC, SEDEX })
