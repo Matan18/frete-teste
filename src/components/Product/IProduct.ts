@@ -1,10 +1,10 @@
 export interface IProduct {
   name: string;
-  width: number;
-  height: number;
-  length: number;
-  weight: number;
+  width: string;
+  height: string;
+  length: string;
+  weight: string;
   id: string;
   quantity: number;
-  value: number;
+  value: string;
 }

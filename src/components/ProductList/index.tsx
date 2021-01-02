@@ -26,21 +26,21 @@ const ProductList: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(false)
   const [name, setName] = useState('')
-  const [weight, setWeight] = useState(0)
-  const [width, setWidth] = useState(0)
-  const [value, setValue] = useState(0)
-  const [height, setHeight] = useState(0)
-  const [length, setLength] = useState(0)
+  const [weight, setWeight] = useState('')
+  const [width, setWidth] = useState('')
+  const [value, setValue] = useState('')
+  const [height, setHeight] = useState('')
+  const [length, setLength] = useState('')
   const [products, setProducts] = useState<IProduct[]>([
     {
       id: "1",
       name: 'Primeiro Item',
       quantity: 1,
-      height: 10,
-      width: 10,
-      length: 10,
-      weight: 0.2,
-      value: 10
+      height: '10',
+      width: '10',
+      length: '10',
+      weight: '0.2',
+      value: '10'
     }
   ]);
 
@@ -56,17 +56,18 @@ const ProductList: React.FC = () => {
   }, []);
 
   const addToCart = useCallback(() => {
-    if (weight > 0 && width > 0 && height > 0 && length > 0) {
+    if (!!weight && !!width && !!height && !!length) {
       const product: IProduct = {
         id: `${products.length + 1}`,
         name,
-        weight: weight / 1000,
+        weight: weight,
         width,
         height,
         length,
         value,
         quantity: 1
       }
+      console.log(product)
       const list = [...products, product];
       setProducts(list.sort(compare));
     } else {
@@ -249,7 +250,7 @@ const ProductList: React.FC = () => {
               <input
                 type="number"
                 value={height}
-                onChange={(e) => setHeight(parseInt(e.target.value))}
+                onChange={(e) => setHeight(e.target.value)}
                 name="name"
               />
               <label >cm</label>
@@ -261,7 +262,7 @@ const ProductList: React.FC = () => {
               <input
                 type="number"
                 value={width}
-                onChange={(e) => setWidth(parseInt(e.target.value))}
+                onChange={(e) => setWidth(e.target.value)}
                 name="name"
               />
               <label >cm</label>
@@ -273,7 +274,7 @@ const ProductList: React.FC = () => {
               <input
                 type="number"
                 value={length}
-                onChange={(e) => setLength(parseInt(e.target.value))}
+                onChange={(e) => setLength(e.target.value)}
                 name="name"
               />
               <label >cm</label>
@@ -286,11 +287,11 @@ const ProductList: React.FC = () => {
             <input
               type="decimal"
               value={weight}
-              onChange={(e) => setWeight(parseFloat(e.target.value) || 0)}
+              onChange={(e) => setWeight(e.target.value)}
               name="peso"
               placeholder="Peso"
             />
-            <label>g</label>
+            <label>Kg</label>
           </div>
         </div>
         <div className={styles.unityContainer}>
@@ -300,7 +301,7 @@ const ProductList: React.FC = () => {
             <input
               type="number"
               value={value}
-              onChange={(e) => setValue(parseFloat(e.target.value))}
+              onChange={(e) => setValue(e.target.value)}
               name="name"
             />
           </div>
