@@ -2,18 +2,19 @@
 import frete from "node-correios";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const formatoDisc= {
+const formatoDisc = {
   CAIXA: 1,
   ROLO: 2,
   ENVELOPE: 3
 }
 
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { products, originCEP: origin, destinyCEP: destiny, valorDeclarado, avisoRecebimento, formato } = req.body;
 
-  function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
   const correios = new frete();
 
   const pack = products.map(product => {
@@ -48,14 +49,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     nVlComprimento: totalVolume,
     nVlAltura: totalVolume,
     nVlLargura: totalVolume,
-    nVlDiametro: totalVolume,
+    // nVlDiametro: "0,0",
     sCdAvisoRecebimento: avisoRecebimento ? "s" : "n",
     nVlValorDeclarado: valorDeclarado ? pack.value : "0.0"
   }).then(result => {
     SEDEX = result[0]
-    // console.log("SEDEX", SEDEX);
+    console.log("SEDEX", SEDEX);
   }).catch(error => {
-    // console.log('Error ', error)
+    console.log('Error ', error)
   });
 
   let PAC;
@@ -74,12 +75,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // sCdMaoPropria: 'S'
   }).then(result => {
     PAC = result[0]
-    // console.log("PAC ", PAC);
+    console.log("PAC ", PAC);
   }).catch(error => {
-    // console.log('Error ', error)
+    console.log('Error ', error)
   });
 
-  await delay(1000);
+  await delay(5000);
+  console.log({ PAC, SEDEX })
   res.statusCode = 200
   res.send({ PAC, SEDEX })
 }

@@ -132,6 +132,7 @@ const ProductList: React.FC = () => {
     } else {
       setLoading(true)
       const response = await api.post<IDeliverWays>('/frete', { products, originCEP, destinyCEP, valorDeclarado, avisoRecebimento, formato })
+      console.log(response.data);
       setDeliverValues(response.data)
       setLoading(false)
     }
@@ -226,7 +227,7 @@ const ProductList: React.FC = () => {
             {deliverValues && (
               <>
                 <section className={styles.PAC}>
-                  {deliverValues.PAC.MsgErro !== '' ? (
+                  {deliverValues?.PAC?.MsgErro !== '' ? (
                     <>
                     </>
                   ) : (
@@ -239,7 +240,7 @@ const ProductList: React.FC = () => {
                     )}
                 </section>
                 <section className={styles.SEDEX}>
-                  {deliverValues.SEDEX.MsgErro !== '' ? (
+                  {deliverValues?.SEDEX?.MsgErro !== '' ? (
                     <>
                     </>
                   ) : (
