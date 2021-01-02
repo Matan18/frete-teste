@@ -203,7 +203,6 @@ const ProductList: React.FC = () => {
                   <h4>PAC</h4>
                   {deliverValues.PAC.MsgErro !== '' ? (
                     <>
-                      <span>Parece que o valor informado é muito baixo, o padrão é R$ 21,00</span>
                     </>
                   ) : (
                       <>
@@ -217,7 +216,6 @@ const ProductList: React.FC = () => {
                   <h4>SEDEX</h4>
                   {deliverValues.SEDEX.MsgErro !== '' ? (
                     <>
-                      <span>Parece que o valor informado é muito baixo, o padrão é R$ 21,00</span>
                     </>
                   ) : (
                       <>
