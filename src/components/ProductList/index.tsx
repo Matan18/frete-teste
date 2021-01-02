@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { api } from '../../services/api';
 import styles from "../../styles/ProductList/styles.module.css";
 import Product from '../Product';
@@ -16,6 +16,8 @@ type IDeliverWays = {
   [value in 'PAC' | 'SEDEX']: FreteResult;
 }
 
+const freteStorage = "@Frete:CEP";
+
 const ProductList: React.FC = () => {
   const [originCEP, setOriginCEP] = useState('');
   const [destinyCEP, setDestinyCEP] = useState('');
@@ -25,6 +27,7 @@ const ProductList: React.FC = () => {
   const [deliverValues, setDeliverValues] = useState<IDeliverWays>()
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(false)
+  const [isCepModal, setIsCepModal] = useState(false)
   const [name, setName] = useState('')
   const [weight, setWeight] = useState('')
   const [width, setWidth] = useState('')
@@ -44,6 +47,17 @@ const ProductList: React.FC = () => {
     }
   ]);
 
+  useEffect(() => {
+    const value = localStorage.getItem(freteStorage)
+    const { originCEP: origin, destinyCEP: destiny } = JSON.parse(value);
+    setOriginCEP(origin)
+    setDestinyCEP(destiny)
+
+  }, [setOriginCEP, setDestinyCEP])
+
+  useEffect(() => {
+    localStorage.setItem(freteStorage, JSON.stringify({ originCEP, destinyCEP }))
+  }, [originCEP, destinyCEP])
 
   const compare = useCallback((a: IProduct, b: IProduct) => {
     if (a.name > b.name) {
@@ -113,10 +127,14 @@ const ProductList: React.FC = () => {
   }, [products, setProducts, compare])
 
   const handleCalc = useCallback(async () => {
-    setLoading(true)
-    const response = await api.post<IDeliverWays>('/frete', { products, originCEP, destinyCEP, valorDeclarado, avisoRecebimento, formato })
-    setDeliverValues(response.data)
-    setLoading(false)
+    if (originCEP.length < 8 || destinyCEP.length < 8) {
+      setIsCepModal(true)
+    } else {
+      setLoading(true)
+      const response = await api.post<IDeliverWays>('/frete', { products, originCEP, destinyCEP, valorDeclarado, avisoRecebimento, formato })
+      setDeliverValues(response.data)
+      setLoading(false)
+    }
   }, [products, originCEP, destinyCEP, valorDeclarado, avisoRecebimento, formato])
 
   return (
@@ -125,6 +143,10 @@ const ProductList: React.FC = () => {
         <strong>Por favor, não deixe nenhum valor sendo 0 (zero) ou negativo</strong>
         <button onClick={() => { setModal(false) }}>close</button>
       </div>
+      <div className={`${styles.modalContainer} ${isCepModal ? (styles.modalAppear) : (null)}`}>
+        <strong>Um dos CEPs não está preenchido com 8 dígitos</strong>
+        <button onClick={() => { setIsCepModal(false) }}>close</button>
+      </div>
 
       <div>
         <h1>Faça o cálculo de vários itens passando as informações de cada um</h1>
@@ -132,11 +154,15 @@ const ProductList: React.FC = () => {
           <div className={styles.config}>
             <div>
               <label>CEP de origem</label>
-              <input value={originCEP} onChange={(e) => setOriginCEP(e.target.value)} />
+              <input value={originCEP}
+                maxLength={8}
+                onChange={(e) => setOriginCEP(e.target.value)} />
             </div>
             <div>
               <label>CEP de destino</label>
-              <input value={destinyCEP} onChange={(e) => setDestinyCEP(e.target.value)} />
+              <input value={destinyCEP}
+                maxLength={8}
+                onChange={(e) => setDestinyCEP(e.target.value)} />
             </div>
 
             <div
