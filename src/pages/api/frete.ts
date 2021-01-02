@@ -10,7 +10,6 @@ const formatoDisc= {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { products, originCEP: origin, destinyCEP: destiny, valorDeclarado, avisoRecebimento, formato } = req.body;
-  console.log(formato)
 
   function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -21,8 +20,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const volume = (product.width * product.length * product.height * product.quantity);
     const peso = (product.weight * product.quantity);
     const value = (product.value * product.quantity);
-    console.log(product)
-    console.log(volume, peso, value)
     return {
       volume,
       peso,
@@ -38,8 +35,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const totalVolume = Math.cbrt(pack.volume);
   const totalPeso = pack.peso;
-  console.log(pack)
-  console.log(pack.volume, totalVolume * totalVolume * totalVolume)
+  // console.log(pack)
+  // console.log(pack.volume, totalVolume * totalVolume * totalVolume)
 
   let SEDEX;
   correios.calcPreco({
@@ -56,9 +53,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     nVlValorDeclarado: valorDeclarado ? pack.value : "0.0"
   }).then(result => {
     SEDEX = result[0]
-    console.log("SEDEX", SEDEX);
+    // console.log("SEDEX", SEDEX);
   }).catch(error => {
-    console.log('Error ', error)
+    // console.log('Error ', error)
   });
 
   let PAC;
@@ -77,9 +74,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // sCdMaoPropria: 'S'
   }).then(result => {
     PAC = result[0]
-    console.log("PAC ", PAC);
+    // console.log("PAC ", PAC);
   }).catch(error => {
-    console.log('Error ', error)
+    // console.log('Error ', error)
   });
 
   await delay(1000);
