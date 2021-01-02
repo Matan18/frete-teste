@@ -17,8 +17,8 @@ type IDeliverWays = {
 }
 
 const ProductList: React.FC = () => {
-  const [originCEP, setOriginCEP] = useState('83820238');
-  const [destinyCEP, setDestinyCEP] = useState('80020040');
+  const [originCEP, setOriginCEP] = useState('');
+  const [destinyCEP, setDestinyCEP] = useState('');
   const [formato, setFormato] = useState<'ENVELOPE' | 'ROLO' | 'CAIXA'>('CAIXA');
   const [valorDeclarado, setValorDeclarado] = useState(false);
   const [avisoRecebimento, setAvisoRecebimento] = useState(false);
