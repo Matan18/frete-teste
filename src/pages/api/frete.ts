@@ -39,9 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // console.log(pack)
   // console.log(pack.volume, totalVolume * totalVolume * totalVolume)
 
-  let SEDEX;
-  correios.calcPreco({
-    nCdServico: "04014",
+  const commonArguments = {
     sCepOrigem: origin,
     sCepDestino: destiny,
     nVlPeso: totalPeso,
@@ -49,9 +47,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     nVlComprimento: totalVolume,
     nVlAltura: totalVolume,
     nVlLargura: totalVolume,
-    // nVlDiametro: "0,0",
     sCdAvisoRecebimento: avisoRecebimento ? "s" : "n",
     nVlValorDeclarado: valorDeclarado ? pack.value : "0.0"
+  }
+
+  let SEDEX;
+  correios.calcPreco({
+    nCdServico: "04014",
+    ...commonArguments
   }).then(result => {
     SEDEX = result[0]
     console.log("SEDEX", SEDEX);
@@ -62,17 +65,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let PAC;
   correios.calcPreco({
     nCdServico: "04510",
-    sCepOrigem: origin,
-    sCepDestino: destiny,
-    nVlPeso: totalPeso,
-    nCdFormato: 3,
-    nVlComprimento: totalVolume,
-    nVlAltura: totalVolume,
-    nVlLargura: totalVolume,
-    nVlDiametro: totalVolume,
-    sCdAvisoRecebimento: avisoRecebimento ? "s" : "n",
-    nVlValorDeclarado: valorDeclarado ? pack.value : "0.0"
-    // sCdMaoPropria: 'S'
+    ...commonArguments
   }).then(result => {
     PAC = result[0]
     console.log("PAC ", PAC);
