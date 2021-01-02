@@ -200,12 +200,12 @@ const ProductList: React.FC = () => {
             {deliverValues && (
               <>
                 <section className={styles.PAC}>
-                  <h4>PAC</h4>
                   {deliverValues.PAC.MsgErro !== '' ? (
                     <>
                     </>
                   ) : (
                       <>
+                        <h4>PAC</h4>
                         <span>Total do frete: R$ {deliverValues.PAC.Valor || "0,00"}</span>
                         <span>Com Valor Declarado: R$ {deliverValues.PAC.ValorValorDeclarado || "0,00"}</span>
                         <span>Com Aviso Recebimento: R$ {deliverValues.PAC.ValorAvisoRecebimento || "0,00"}</span>
@@ -213,12 +213,12 @@ const ProductList: React.FC = () => {
                     )}
                 </section>
                 <section className={styles.SEDEX}>
-                  <h4>SEDEX</h4>
                   {deliverValues.SEDEX.MsgErro !== '' ? (
                     <>
                     </>
                   ) : (
                       <>
+                        <h4>SEDEX</h4>
                         <span>Total do frete: R$ {deliverValues.SEDEX.Valor || "0,00"}</span>
                         <span>Com Valor Declarado: R$ {deliverValues.SEDEX.ValorValorDeclarado || "0,00"}</span>
                         <span>Com Aviso Recebimento: R$ {deliverValues.SEDEX.ValorAvisoRecebimento || "0,00"}</span>
