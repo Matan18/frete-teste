@@ -1,0 +1,119 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+}
+.container .container label {
+  padding: 16px 8px;
+}
+.newItemContainer {
+  display: flex;
+  max-width: 500px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.newItemContainer button {
+  margin-top: 8px;
+}
+.newItemContainer input {
+  text-align: center;
+  width: 70px;
+  height: 30px;
+}
+.name {
+  width: 300px !important;
+}
+
+.centimetersContainer {
+  display: flex;
+}
+
+.unityContainer {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+}
+
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.listContainer li {
+  border-top: 1px solid #333;
+  padding: 8px;
+}
+.listContainer li:first-child {
+  border: 0px;
+}
+
+.modalContainer {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  box-sizing: border-box;
+  background: #8257e6;
+  width: 300px;
+  padding: 30px;
+  border-radius: 16px;
+  transition: 0.5s;
+  display: none;
+}
+.modalContainer button {
+  background: none;
+  border: 1px solid #333;
+  margin: 8px 0 0;
+}
+.modalAppear {
+  display: flex;
+}
+
+.header {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.config {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+}
+
+.config > div {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.simpleCheckbox {
+  justify-content: flex-start !important;
+}
+.simpleCheckbox label {
+  margin-right: 16px;
+}
+.config > div div {
+  display: flex;
+  flex-direction: column;
+}
+
+.results {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 100px;
+  flex: 1;
+}
+
+.results section {
+  display: flex;
+  flex-direction: column;
+  flex:1;
+}

@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.container button {
+  outline: none;
+}
+
+.container > button {
+  margin-left: 16px;
+}
+.nameContainer {
+  font-size: 25px;
+  margin: 0 8px;
+}
+.quantityManipulatorContainer {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.quantityManipulatorContainer label {
+  margin: 0 15px;
+}
+
+.dimensions{
+  display: flex;
+  width: 250px;
+  flex-wrap: wrap;
+}
