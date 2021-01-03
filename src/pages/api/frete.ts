@@ -8,6 +8,14 @@ const formatoDisc = {
   ENVELOPE: 3
 }
 
+interface FreteResult {
+  Valor: string;
+  ValorAvisoRecebimento: string;
+  ValorValorDeclarado: string;
+  ValorSemAdicionais: string;
+  MsgErro: string | undefined;
+}
+
 function delay(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -51,29 +59,35 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     nVlValorDeclarado: valorDeclarado ? pack.value : "0.0"
   }
 
-  let SEDEX;
-  correios.calcPreco({
-    nCdServico: "04014",
-    ...commonArguments
-  }).then(result => {
-    SEDEX = result[0]
-    console.log("SEDEX", SEDEX);
-  }).catch(error => {
-    console.log('Error ', error)
+  const calcSedex = new Promise<FreteResult>((resolve, reject) => {
+    correios.calcPreco({
+      nCdServico: "04014",
+      ...commonArguments
+    }).then(result => {
+      resolve(result[0]);
+      // console.error("SEDEX", result[0]);
+    }).catch(error => {
+      console.error('Error ', error)
+      reject(error)
+    });
+  })
+  const SEDEX = await calcSedex;
+
+
+  const calcPAC = new Promise<FreteResult>((resolve, reject) => {
+    correios.calcPreco({
+      nCdServico: "04510",
+      ...commonArguments
+    }).then(result => {
+      resolve(result[0])
+      // console.error("PAC ", PAC);
+    }).catch(error => {
+      reject(error)
+      console.error('Error ', error)
+    })
   });
 
-  let PAC;
-  correios.calcPreco({
-    nCdServico: "04510",
-    ...commonArguments
-  }).then(result => {
-    PAC = result[0]
-    console.log("PAC ", PAC);
-  }).catch(error => {
-    console.log('Error ', error)
-  });
-
-  await delay(5000);
+  const PAC = await calcPAC;
   console.log({ PAC, SEDEX })
   res.statusCode = 200
   res.send({ PAC, SEDEX })
