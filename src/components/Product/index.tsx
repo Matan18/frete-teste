@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiPlus, FiMinus, FiTrash } from "react-icons/fi";
+import { FiPlusCircle, FiMinusCircle,  FiTrash2 } from "react-icons/fi";
 import { IProduct } from './IProduct';
 
 import styles from "../../styles/Product/styles.module.css";
@@ -25,12 +25,14 @@ const Product: React.FC<IProductProps> = ({ product, increment, decrement, remov
         <label>Peso: {product.weight}Kg. </label>
 
       </div>
-      <div className={styles.quantityManipulatorContainer}>
-        <button onClick={(e) => { e.preventDefault(); increment(product.id) }}><FiPlus size={25} color="#333" /></button>
-        <label>{product.quantity}</label>
-        <button onClick={(e) => { e.preventDefault(); decrement(product.id) }}><FiMinus size={25} color="#333" /></button>
+      <div className={styles.manipylatorsContainer}>
+        <div className={styles.quantityManipulatorContainer}>
+          <button onClick={(e) => { e.preventDefault(); increment(product.id) }}><FiPlusCircle size={20} color="#333" /></button>
+          <label>{product.quantity}</label>
+          <button onClick={(e) => { e.preventDefault(); decrement(product.id) }}><FiMinusCircle size={20} color="#333" /></button>
+        </div>
+        <button onClick={(e) => { e.preventDefault(); removeItem(product.id) }}><FiTrash2 size={20} color="#333" /></button>
       </div>
-      <button onClick={(e) => { e.preventDefault(); removeItem(product.id) }}><FiTrash size={25} color="#333" /></button>
     </li>
   )
 }

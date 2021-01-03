@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { FiPlus } from 'react-icons/fi';
 import { api } from '../../services/api';
 import styles from "../../styles/ProductList/styles.module.css";
 import Product from '../Product';
@@ -21,7 +22,7 @@ const freteStorage = "@Frete:CEP";
 const ProductList: React.FC = () => {
   const [originCEP, setOriginCEP] = useState('');
   const [destinyCEP, setDestinyCEP] = useState('');
-  const [formato, setFormato] = useState<'ENVELOPE' | 'ROLO' | 'CAIXA'>('CAIXA');
+  const [formato, setFormato] = useState<'ENVELOPE' | 'CAIXA'>('CAIXA');
   const [valorDeclarado, setValorDeclarado] = useState(false);
   const [avisoRecebimento, setAvisoRecebimento] = useState(false);
   const [deliverValues, setDeliverValues] = useState<IDeliverWays>()
@@ -38,9 +39,12 @@ const ProductList: React.FC = () => {
 
   useEffect(() => {
     const value = localStorage.getItem(freteStorage)
-    const { originCEP: origin, destinyCEP: destiny } = JSON.parse(value);
-    setOriginCEP(origin)
-    setDestinyCEP(destiny)
+    try {
+
+      const { originCEP: origin, destinyCEP: destiny } = JSON.parse(value);
+      setOriginCEP(origin || '')
+      setDestinyCEP(destiny || '')
+    } catch { }
 
   }, [setOriginCEP, setDestinyCEP])
 
@@ -148,6 +152,42 @@ const ProductList: React.FC = () => {
       <div>
         <h1>Faça o cálculo de vários itens passando as informações de cada um</h1>
         <div className={styles.header}>
+          <div className={styles.results}>
+            {deliverValues && (
+              <>
+                <section className={styles.PAC}>
+                  {deliverValues?.PAC?.MsgErro !== '' ? (
+                    <>
+                    </>
+                  ) : (
+                      <>
+                        <div className={styles.deliverWayTitle}>
+                          <strong>PAC</strong>
+                        </div>
+                        <span>Total do frete: R$ {deliverValues.PAC.Valor || "0,00"}</span>
+                        <span>Com Valor Declarado: R$ {deliverValues.PAC.ValorValorDeclarado || "0,00"}</span>
+                        <span>Com Aviso Recebimento: R$ {deliverValues.PAC.ValorAvisoRecebimento || "0,00"}</span>
+                      </>
+                    )}
+                </section>
+                <section className={styles.SEDEX}>
+                  {deliverValues?.SEDEX?.MsgErro !== '' ? (
+                    <>
+                    </>
+                  ) : (
+                      <>
+                        <div className={styles.deliverWayTitle}>
+                          <strong>SEDEX</strong>
+                        </div>
+                        <span>Total do frete: R$ {deliverValues.SEDEX.Valor || "0,00"}</span>
+                        <span>Com Valor Declarado: R$ {deliverValues.SEDEX.ValorValorDeclarado || "0,00"}</span>
+                        <span>Com Aviso Recebimento: R$ {deliverValues.SEDEX.ValorAvisoRecebimento || "0,00"}</span>
+                      </>
+                    )}
+                </section>
+              </>
+            )}
+          </div>
           <div className={styles.config}>
             <div>
               <label>CEP de origem</label>
@@ -197,7 +237,7 @@ const ProductList: React.FC = () => {
                   checked={formato === 'ENVELOPE' ? true : false}
                 />
               </div>
-              <div>
+              {/* <div>
                 <label htmlFor="ROLO">Rolo</label>
                 <input
                   type="radio"
@@ -206,7 +246,7 @@ const ProductList: React.FC = () => {
                   id="ROLO"
                   checked={formato === 'ROLO' ? true : false}
                 />
-              </div>
+              </div> */}
               <div>
                 <label htmlFor="CAIXA">Caixa</label>
                 <input
@@ -218,38 +258,6 @@ const ProductList: React.FC = () => {
                 />
               </div>
             </div>
-          </div>
-          <div className={styles.results}>
-            {deliverValues && (
-              <>
-                <section className={styles.PAC}>
-                  {deliverValues?.PAC?.MsgErro !== '' ? (
-                    <>
-                    </>
-                  ) : (
-                      <>
-                        <h4>PAC</h4>
-                        <span>Total do frete: R$ {deliverValues.PAC.Valor || "0,00"}</span>
-                        <span>Com Valor Declarado: R$ {deliverValues.PAC.ValorValorDeclarado || "0,00"}</span>
-                        <span>Com Aviso Recebimento: R$ {deliverValues.PAC.ValorAvisoRecebimento || "0,00"}</span>
-                      </>
-                    )}
-                </section>
-                <section className={styles.SEDEX}>
-                  {deliverValues?.SEDEX?.MsgErro !== '' ? (
-                    <>
-                    </>
-                  ) : (
-                      <>
-                        <h4>SEDEX</h4>
-                        <span>Total do frete: R$ {deliverValues.SEDEX.Valor || "0,00"}</span>
-                        <span>Com Valor Declarado: R$ {deliverValues.SEDEX.ValorValorDeclarado || "0,00"}</span>
-                        <span>Com Aviso Recebimento: R$ {deliverValues.SEDEX.ValorAvisoRecebimento || "0,00"}</span>
-                      </>
-                    )}
-                </section>
-              </>
-            )}
           </div>
         </div>
       </div>
@@ -327,8 +335,19 @@ const ProductList: React.FC = () => {
             />
           </div>
         </div>
-        <button type="submit" onClick={(e) => { e.preventDefault(); addToCart() }}>Adicionar na Lista</button>
+        <button
+          className={styles.addItemButton}
+          type="submit"
+          onClick={(e) => { e.preventDefault(); addToCart() }}
+        >Adicionar Item
+        <FiPlus size={18} />
+        </button>
       </form>
+      <button
+        className={styles.calcButton}
+        disabled={loading}
+        onClick={(e) => { e.preventDefault(); handleCalc() }}
+      >Calcular</button>
       <ul className={styles.listContainer}>
         {products[0] && products.map(product => (
           <Product
@@ -339,9 +358,6 @@ const ProductList: React.FC = () => {
             removeItem={removeFromCart}
           />
         ))}
-        <button
-          disabled={loading}
-          onClick={(e) => { e.preventDefault(); handleCalc() }}>Calcular frete</button>
       </ul>
     </div >
   )

@@ -6,17 +6,19 @@
   align-items: center;
   justify-content: flex-start;
   position: relative;
+  text-align: center;
 }
-.container .container label {
-  padding: 16px 8px;
+.container label {
+  padding: 2px;
 }
+
 .newItemContainer {
   display: flex;
-  max-width: 500px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 }
+
 .newItemContainer button {
   margin-top: 8px;
 }
@@ -43,13 +45,19 @@
 .listContainer {
   display: flex;
   flex-direction: column;
+  width: 100%;
   align-items: center;
+  flex: 1 1;
+  margin: 8px 0;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
 }
 
 .listContainer li {
   border-top: 1px solid #333;
-  padding: 8px;
 }
+
 .listContainer li:first-child {
   border: 0px;
 }
@@ -79,18 +87,20 @@
 .header {
   display: flex;
   width: 100%;
+  flex-wrap: wrap;
   justify-content: space-around;
 }
 
 .config {
   display: flex;
   flex-direction: column;
-  max-width: 300px;
+  align-items: center;
 }
 
 .config > div {
   display: flex;
-  justify-content: space-between;
+  width: 100%;
+  justify-content: space-around;
   margin-top: 8px;
 }
 
@@ -103,17 +113,61 @@
 .config > div div {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .results {
   display: flex;
   justify-content: space-between;
-  margin-left: 100px;
   flex: 1;
+  margin-top: 16px;
+  padding: 0;
+  border: 1px solid #333;
+  text-align: start;
 }
 
 .results section {
   display: flex;
   flex-direction: column;
-  flex:1;
+  flex: 1;
+  align-items: center;
+  text-align: start;
+  padding: 8px;
+}
+.results section + section {
+  border-left: 1px solid #333;
+}
+
+.calcButton {
+  padding: 8px;
+  min-width: 120px;
+  background-color: #084df7;
+  margin-top: 8px;
+  border: 1px solid #333;
+  color: #fff;
+  font-family: "Roboto", sans-serif;
+  border-radius: 4px;
+}
+
+.deliverWayTitle {
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(35, 70, 200);
+  transform: skewX(-20deg);
+  color: #ff0;
+}
+
+.addItemButton {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+  background-color: #084df7;
+  margin-top: 8px;
+  border: 1px solid #333;
+  color: #fff;
+  font-family: "Roboto", sans-serif;
+  border-radius: 4px;
 }
