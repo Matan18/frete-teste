@@ -119,11 +119,18 @@ const ProductList: React.FC = () => {
     if (originCEP.length < 8 || destinyCEP.length < 8) {
       setIsCepModal(true)
     } else {
-      setLoading(true)
-      const response = await api.post<IDeliverWays>('/frete', { products, originCEP, destinyCEP, valorDeclarado, avisoRecebimento, formato })
-      console.log(response.data);
-      setDeliverValues(response.data)
-      setLoading(false)
+      try {
+
+        setLoading(true)
+        const response = await api.post<IDeliverWays>('/frete', { products, originCEP, destinyCEP, valorDeclarado, avisoRecebimento, formato })
+        console.log(response.data);
+        setDeliverValues(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+      finally {
+        setLoading(false)
+      }
     }
   }, [products, originCEP, destinyCEP, valorDeclarado, avisoRecebimento, formato])
 
