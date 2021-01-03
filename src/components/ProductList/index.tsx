@@ -34,18 +34,7 @@ const ProductList: React.FC = () => {
   const [value, setValue] = useState('')
   const [height, setHeight] = useState('')
   const [length, setLength] = useState('')
-  const [products, setProducts] = useState<IProduct[]>([
-    {
-      id: "1",
-      name: 'Primeiro Item',
-      quantity: 1,
-      height: '10',
-      width: '10',
-      length: '10',
-      weight: '0.2',
-      value: '10'
-    }
-  ]);
+  const [products, setProducts] = useState<IProduct[]>([]);
 
   useEffect(() => {
     const value = localStorage.getItem(freteStorage)
@@ -334,7 +323,7 @@ const ProductList: React.FC = () => {
         <button type="submit" onClick={(e) => { e.preventDefault(); addToCart() }}>Adicionar na Lista</button>
       </form>
       <ul className={styles.listContainer}>
-        {products && products.map(product => (
+        {products[0] && products.map(product => (
           <Product
             key={product.id}
             product={product}
