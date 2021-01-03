@@ -29,6 +29,7 @@ const ProductList: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState(false)
   const [isCepModal, setIsCepModal] = useState(false)
+  const [serverError, setServerError] = useState('');
   const [name, setName] = useState('')
   const [weight, setWeight] = useState('')
   const [width, setWidth] = useState('')
@@ -124,19 +125,23 @@ const ProductList: React.FC = () => {
       setIsCepModal(true)
     } else {
       try {
-
         setLoading(true)
         const response = await api.post<IDeliverWays>('/frete', { products, originCEP, destinyCEP, valorDeclarado, avisoRecebimento, formato })
+        if (response.data.PAC.MsgErro !== "" || response.data.SEDEX.MsgErro !== "") {
+          setServerError(`Ocorreu um erro com um dos cálculos: ${response.data.PAC.MsgErro ? `PAC: ${response.data.PAC.MsgErro}` : ('Nenhum Erro.')} ${response.data.SEDEX.MsgErro ? `SEDEX: ${response.data.SEDEX.MsgErro}` : ('Nenhum Erro.')}`)
+        }
         console.log(response.data);
         setDeliverValues(response.data)
       } catch (error) {
         console.error(error)
+        setServerError(error)
+
       }
       finally {
         setLoading(false)
       }
     }
-  }, [products, originCEP, destinyCEP, valorDeclarado, avisoRecebimento, formato])
+  }, [products, originCEP, destinyCEP, valorDeclarado, avisoRecebimento, formato, serverError])
 
   return (
     <div className={styles.container}>
@@ -148,46 +153,42 @@ const ProductList: React.FC = () => {
         <strong>Um dos CEPs não está preenchido com 8 dígitos</strong>
         <button onClick={() => { setIsCepModal(false) }}>close</button>
       </div>
+      <div className={`${styles.modalContainer} ${serverError !== '' ? (styles.modalAppear) : (null)}`}>
+        <strong>{serverError}</strong>
+        <button onClick={() => { setServerError('') }}>close</button>
+      </div>
 
       <div>
-        <h1>Faça o cálculo de vários itens passando as informações de cada um</h1>
+        <h4>Faça o cálculo de vários itens passando as informações de cada um</h4>
         <div className={styles.header}>
-          <div className={styles.results}>
-            {deliverValues && (
-              <>
-                <section className={styles.PAC}>
-                  {deliverValues?.PAC?.MsgErro !== '' ? (
-                    <>
-                    </>
-                  ) : (
-                      <>
-                        <div className={styles.deliverWayTitle}>
-                          <strong>PAC</strong>
-                        </div>
-                        <span>Total do frete: R$ {deliverValues.PAC.Valor || "0,00"}</span>
-                        <span>Com Valor Declarado: R$ {deliverValues.PAC.ValorValorDeclarado || "0,00"}</span>
-                        <span>Com Aviso Recebimento: R$ {deliverValues.PAC.ValorAvisoRecebimento || "0,00"}</span>
-                      </>
-                    )}
-                </section>
-                <section className={styles.SEDEX}>
-                  {deliverValues?.SEDEX?.MsgErro !== '' ? (
-                    <>
-                    </>
-                  ) : (
-                      <>
-                        <div className={styles.deliverWayTitle}>
-                          <strong>SEDEX</strong>
-                        </div>
-                        <span>Total do frete: R$ {deliverValues.SEDEX.Valor || "0,00"}</span>
-                        <span>Com Valor Declarado: R$ {deliverValues.SEDEX.ValorValorDeclarado || "0,00"}</span>
-                        <span>Com Aviso Recebimento: R$ {deliverValues.SEDEX.ValorAvisoRecebimento || "0,00"}</span>
-                      </>
-                    )}
-                </section>
-              </>
-            )}
-          </div>
+          {(deliverValues?.PAC?.MsgErro == '' || deliverValues?.SEDEX?.MsgErro == "") && (
+            <div className={styles.results}>
+              <section className={styles.PAC}>
+                {deliverValues?.PAC?.MsgErro !== '' ? (null) : (
+                  <>
+                    <div className={styles.deliverWayTitle}>
+                      <strong>PAC</strong>
+                    </div>
+                    <span>Total do frete: R$ {deliverValues.PAC.Valor || "0,00"}</span>
+                    <span>Com Valor Declarado: R$ {deliverValues.PAC.ValorValorDeclarado || "0,00"}</span>
+                    <span>Com Aviso Recebimento: R$ {deliverValues.PAC.ValorAvisoRecebimento || "0,00"}</span>
+                  </>
+                )}
+              </section>
+              <section className={styles.SEDEX}>
+                {deliverValues?.SEDEX?.MsgErro !== '' ? (null) : (
+                  <>
+                    <div className={styles.deliverWayTitle}>
+                      <strong>SEDEX</strong>
+                    </div>
+                    <span>Total do frete: R$ {deliverValues.SEDEX.Valor || "0,00"}</span>
+                    <span>Com Valor Declarado: R$ {deliverValues.SEDEX.ValorValorDeclarado || "0,00"}</span>
+                    <span>Com Aviso Recebimento: R$ {deliverValues.SEDEX.ValorAvisoRecebimento || "0,00"}</span>
+                  </>
+                )}
+              </section>
+            </div>
+          )}
           <div className={styles.config}>
             <div>
               <label>CEP de origem</label>
