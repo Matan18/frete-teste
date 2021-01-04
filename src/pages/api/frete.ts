@@ -95,8 +95,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (error) {
     res.statusCode = 500
     return res.send({ message: 'Ocorreu um erro ao calcular o frete, por favor, tente novamente' })
-  } finally {
-    res.statusCode = 500
-    return res.send({ message: 'Ocorreu um erro inesperado ao calcular o frete, por favor, tente novamente' })
   }
 }
