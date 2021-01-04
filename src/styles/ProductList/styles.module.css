@@ -157,6 +157,9 @@
   font-family: "Roboto", sans-serif;
   border-radius: 4px;
 }
+.calcButton:disabled {
+  background: #333;
+}
 
 .deliverWayTitle {
   width: 60px;

@@ -71,7 +71,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       reject(error)
     });
   })
-  const SEDEX = await calcSedex;
 
 
   const calcPAC = new Promise<FreteResult>((resolve, reject) => {
@@ -82,13 +81,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       resolve(result[0])
       // console.error("PAC ", PAC);
     }).catch(error => {
-      reject(error)
       console.error('Error ', error)
+      reject(error)
     })
   });
 
-  const PAC = await calcPAC;
-  console.log({ PAC, SEDEX })
-  res.statusCode = 200
-  res.send({ PAC, SEDEX })
+  try {
+    const SEDEX = await calcSedex;
+    const PAC = await calcPAC;
+    console.log({ PAC, SEDEX })
+    res.statusCode = 200
+    return res.send({ PAC, SEDEX })
+  } catch (error) {
+    res.statusCode = 500
+    return res.send({ message: 'Ocorreu um erro ao calcular o frete, por favor, tente novamente' })
+  } finally {
+    res.statusCode = 500
+    return res.send({ message: 'Ocorreu um erro inesperado ao calcular o frete, por favor, tente novamente' })
+  }
 }

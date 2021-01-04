@@ -133,9 +133,8 @@ const ProductList: React.FC = () => {
         console.log(response.data);
         setDeliverValues(response.data)
       } catch (error) {
-        console.error(error)
-        setServerError(error)
-
+        console.error("Um erro", error.response.data.message)
+        setServerError(error.response.data.message)
       }
       finally {
         setLoading(false)
