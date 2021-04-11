@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import { api } from '../../services/api';
-import styles from "../../styles/ProductList/styles.module.css";
+import styles from "../../styles/components/ProductList/styles.module.css";
 import Product from '../Product';
 import { IProduct } from '../Product/IProduct';
 

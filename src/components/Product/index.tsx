@@ -2,7 +2,7 @@ import React from 'react';
 import { FiPlusCircle, FiMinusCircle,  FiTrash2 } from "react-icons/fi";
 import { IProduct } from './IProduct';
 
-import styles from "../../styles/Product/styles.module.css";
+import styles from "../../styles/components/Product/styles.module.css";
 
 interface IProductProps {
   product: IProduct;

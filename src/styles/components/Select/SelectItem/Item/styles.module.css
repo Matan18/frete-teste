@@ -1,0 +1,34 @@
+.itemContainer {
+  background: #e1e1e1;
+  display: flex;
+  margin: 2px 4px;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+.itemContainer > span{
+  padding: 0 8px;
+}
+
+.itemContainer > .categoryInfo {
+  display: none;
+}
+.itemContainer:hover > .categoryInfo {
+  position: absolute;
+  top: 10px;
+  display: flex;
+  overflow: visible;
+  flex-direction: column;
+  width: 200px;
+  z-index: 99;
+  background: white;
+}
+
+.closeButton{
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  border: 1px solid #333;
+}
+
