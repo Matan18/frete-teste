@@ -1,0 +1,55 @@
+.container {
+  height: 100%;
+  margin: 20px 0;
+}
+
+.navigation {
+  ul {
+    list-style-type: none;
+    display: flex;
+  }
+}
+
+.navItem {
+  margin: 10px 4px 0 0;
+  padding: 10px;
+  border: 0px solid #ccc;
+  color: #048df7;
+  font-family: "Amble";
+  font-size: 16px;
+  border-radius: 5px 5px 0px 0px;
+  &:hover {
+    background: #048df7;
+    color: white;
+  }
+}
+
+.active {
+  @extend .navItem;
+  border-width: 1px;
+  border-bottom-width: 0px;
+  z-index: 0;
+  background: white;
+  &:hover {
+    background: white;
+    color: #048df7;
+  }
+}
+
+.sectionContainer {
+  margin: 0;
+  margin-top: -1px;
+  padding: 12px 10px;
+  border: 1px solid #ccc;
+  border-radius: 1px;
+  z-index: 1;
+}
+
+.contentText {
+  margin-top: 10px;
+  span {
+    font-size: 18px;
+    margin-right: 10px;
+    color: black;
+  }
+}

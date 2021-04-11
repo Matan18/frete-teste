@@ -25,6 +25,13 @@ export default function Home() {
             </div>
           </a>
         </Link>
+        <Link href="/richtext">
+          <a>
+            <div>
+              <h2>Rich Text Register A Product</h2>
+            </div>
+          </a>
+        </Link>
       </div>
 
     </div>
